@@ -9,6 +9,7 @@ requests = "*"
 pycoingecko = "*"
 bs4 = "*"
 scrapy = "*"
+nltk = "*"
 
 [dev-packages]
 
