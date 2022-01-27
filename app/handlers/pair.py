@@ -6,7 +6,7 @@ from modules.TokenList import token_list
 from modules.APIHandler import api_handler
 from create_bot import dp, bot
 from config import reactions
-
+from keyboards import similar_coins
 
 
 # @dp.message_handler(commands=['pair'])
@@ -27,8 +27,9 @@ async def pair_first_coin(message: types.Message, state: FSMContext):
             data['first_coin'] = addresses[0]
         await ExStates.pair_second.set()
     else:
-        # Сделать кнопки с возможными вариантами
-        await message.reply(reactions['several'])
+        keyboard = await similar_coins.create_keyboard(addresses)
+        await message.reply(reactions['several'], reply_markup=keyboard)
+
 
 
 async def prepare_result_pair(output):
@@ -44,14 +45,18 @@ async def pair_second_coin(message: types.Message, state: FSMContext):
     if len(addresses) == 0:
         await message.reply(reactions['unknown'])
     elif len(addresses) == 1:
-        await message.answer(reactions['pair_result'])
-        async with state.proxy() as data:
-            reply_message = await prepare_result_pair(api_handler.output(data["first_coin"][0], addresses[0][0]))
+        try:
+            async with state.proxy() as data:
+                api_result = api_handler.output(data["first_coin"][0], addresses[0][0])
+                reply_message = await prepare_result_pair(api_result) 
+            await message.answer(reactions['pair_result'])
             await message.answer(reply_message)
+        except UserWarning as e:
+            await message.answer(reactions['api_bad_response'])
         await state.finish()
     else:
-        # Сделать кнопки с возможными вариантами
-        await message.reply(reactions['several'])
+        keyboard = await similar_coins.create_keyboard(addresses)
+        await message.reply(reactions['several'], reply_markup=keyboard)
 
 
 def register_handlers_pair(dp: Dispatcher):

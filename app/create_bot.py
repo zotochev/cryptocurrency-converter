@@ -1,10 +1,10 @@
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from config import TLG_TOKEN
+import os
 
 
 # Initialize bot and dispatcher
-bot = Bot(token=TLG_TOKEN)
+bot = Bot(token=os.environ['TOKEN'])
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 

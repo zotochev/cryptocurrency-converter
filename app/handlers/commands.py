@@ -6,13 +6,14 @@ from .ExStates import ExStates
 from create_bot import dp, bot
 from config import reactions
 from keyboards import start_keyboard
+import os
 
 
 # @dp.message_handler(commands=['start'])
 async def send_start(message: types.Message, state: FSMContext):
     keyboard = await start_keyboard.create_keyboard(['/single', '/pair'])
     await state.finish()
-    await message.answer(reactions['start'], reply_markup=keyboard)
+    await message.answer(reactions['start'], reply_markup=keyboard, parse_mode='markdown', disable_web_page_preview=True)
 
 
 async def send_help(message: types.Message, state: FSMContext):

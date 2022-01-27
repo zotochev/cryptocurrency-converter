@@ -30,9 +30,13 @@ async def single_rate_reply(message: types.Message, state: FSMContext):
         await message.reply(reactions['unknown'])
         await state.finish()
     elif len(addresses) == 1:
-        await message.answer(reactions['single_result'])
-        reply_message = await prepare_result_single(api_handler.output(addresses[0][0])) 
-        await message.answer(reply_message)
+        try:
+            api_result = api_handler.output(addresses[0][0])
+            reply_message = await prepare_result_single(api_result) 
+            await message.answer(reactions['single_result'])
+            await message.answer(reply_message)
+        except UserWarning as e:
+            await message.answer(reactions['api_bad_response'])
         await state.finish()
     else:
         # Сделать кнопки с возможными вариантами
