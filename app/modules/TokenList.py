@@ -1,7 +1,7 @@
 import requests
 from nltk.metrics.distance import edit_distance
 
-from .config import API_ALL_TOKENS, SIM_IND
+from config import API_ALL_TOKENS, SIM_IND
 
 
 class TokenList:
@@ -80,6 +80,9 @@ class TokenList:
             return name[:max(ind_coin, ind_token)].strip()
         else:
             return name
+
+
+token_list = TokenList()
 
 
 def main():
