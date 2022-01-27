@@ -1,5 +1,8 @@
-API_ALL_TOKENS = 'https://api.pancakeswap.info/api/v2/tokens'
+# API url to send price request
 API_RATE = 'https://api.pancakeswap.info/api/v2/tokens'
+
+# API url to collect tokens symbols and name to validate mistapes
+API_ALL_TOKENS = 'https://api.pancakeswap.info/api/v2/tokens'
 
 # Similarity index
 # integer number that used for mistapes suggestions
