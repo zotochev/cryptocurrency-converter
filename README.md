@@ -36,4 +36,5 @@ SIM_IND=2 is_similar("ethereum", "ethireume") -> True
 * `modules` - классы для работы с API и для получения адреса валюты по её названию
 
 ## Требования для запуска
+* [https://pypi.org/project/pipenv/](https://pypi.org/project/pipenv/)
 * Docker
