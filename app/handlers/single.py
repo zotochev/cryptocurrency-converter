@@ -10,11 +10,7 @@ from config import reactions
 from keyboards import similar_coins
 
 
-#@dp.message_handler(commands=['single'], state='*')
-async def single_rate(message: types.Message, state: FSMContext):
-    await ExStates.single.set()
-    await message.reply(reactions['single'])
-
+# /single command handler located in commands.py
 
 async def prepare_result_single(output):
     result_price = float(output[0]['price'])
@@ -28,7 +24,6 @@ async def single_rate_reply(message: types.Message, state: FSMContext):
 
     if len(addresses) == 0:
         await message.reply(reactions['unknown'])
-        await state.finish()
     elif len(addresses) == 1:
         try:
             api_result = api_handler.output(addresses[0][0])
@@ -37,7 +32,6 @@ async def single_rate_reply(message: types.Message, state: FSMContext):
             await message.answer(reply_message)
         except UserWarning as e:
             await message.answer(reactions['api_bad_response'])
-        await state.finish()
     else:
         # Сделать кнопки с возможными вариантами
         keyboard = await similar_coins.create_keyboard(addresses)
@@ -45,5 +39,4 @@ async def single_rate_reply(message: types.Message, state: FSMContext):
 
 
 def register_handlers_single(dp: Dispatcher):
-    dp.register_message_handler(single_rate, commands=['single'], state='*')
     dp.register_message_handler(single_rate_reply, content_types=types.ContentType.TEXT, state=ExStates.single)

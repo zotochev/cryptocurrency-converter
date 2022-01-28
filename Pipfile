@@ -10,6 +10,7 @@ pycoingecko = "*"
 bs4 = "*"
 scrapy = "*"
 nltk = "*"
+schedule = "*"
 
 [dev-packages]
 

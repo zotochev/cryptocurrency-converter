@@ -1,8 +1,11 @@
 # API url to send price request
-API_RATE = 'https://api.pancakeswap.info/api/v2/tokens'
+# usage requests.get(f'{API_RATE}/{address}')
+API_RATE: str = 'https://api.pancakeswap.info/api/v2/tokens'
 
 # API url to collect tokens symbols and name to validate mistapes
-API_ALL_TOKENS = 'https://api.pancakeswap.info/api/v2/tokens'
+# info from this url collected in instance of TokenList
+# usage requests.get(f'{API_ALL_TOKENS}')
+API_ALL_TOKENS: str = 'https://api.pancakeswap.info/api/v2/tokens'
 
 # Similarity index
 # integer number that used for mistapes suggestions
@@ -10,7 +13,16 @@ API_ALL_TOKENS = 'https://api.pancakeswap.info/api/v2/tokens'
 # Example:
 # SIM_IND=1 is_similar("ethereum", "ethireume") -> False
 # SIM_IND=2 is_similar("ethereum", "ethireume") -> True 
-SIM_IND=2
+SIM_IND: int = 2
+
+
+# update Token list
+# Token list use is to collect token address by name of token
+UP_TOKEN_LIST: bool = True
+# number of UP_PERIOD before update
+UP_EVERY: int = 10
+# possible UP_PERIOD variants union('seconds' | 'minutes' | 'hours' | 'days' | 'weeks')
+UP_PERIOD: str = 'seconds'
 
 
 reactions = {
@@ -27,11 +39,11 @@ reactions = {
                  "two messages.",
 
         "single": "💹Send me a token to get its price.",
-        "single_result": "✅Here it is:",
+        "single_result": "⬇️Here it is:",
 
         "pair": "🔄Send me the first token.",
         "pair_next": "✅Ok, send me the next one",
-        "pair_result": "✅Here is the price of two tokens:",
+        "pair_result": "⬇️Here is the price:",
 
         "unknown": "❌Sorry, I don't know such token.",
 

@@ -1,7 +1,9 @@
 import requests
 from nltk.metrics.distance import edit_distance
+import schedule
 
-from config import API_ALL_TOKENS, SIM_IND
+from config import API_ALL_TOKENS, SIM_IND, UP_EVERY, UP_PERIOD, UP_TOKEN_LIST
+import logging
 
 
 class TokenList:
@@ -11,6 +13,7 @@ class TokenList:
         self.update()
 
     def update(self):
+        logging.info('Token list updated')
         r = requests.get(API_ALL_TOKENS)
 
         if 200 == r.status_code:
@@ -82,7 +85,23 @@ class TokenList:
             return name
 
 
+def create_update(every, period):
+    update = {
+                'seconds': schedule.every(every).seconds.do,
+                'minutes':  schedule.every(every).minutes.do,
+                'hours': schedule.every(every).hours.do,
+                'days': schedule.every(every).days.do,
+                'weeks': schedule.every(every).weeks.do,
+              }
+
+    return update.get(period, schedule.every(every).days.do) 
+
+
 token_list = TokenList()
+
+# update actualy hapans when /start command called
+if UP_TOKEN_LIST:
+    create_update(UP_EVERY, UP_PERIOD)(token_list.update)
 
 
 def main():

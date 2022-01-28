@@ -9,11 +9,7 @@ from config import reactions
 from keyboards import similar_coins
 
 
-# @dp.message_handler(commands=['pair'])
-async def pair_rate(message: types.Message, state: FSMContext):
-    await ExStates.pair_first.set()
-    await message.reply(reactions['pair'])
-
+# /pair command handler located in commands.py
 
 # @dp.message_handler(content_types=types.ContentType.TEXT, state=ExStates.pair_first)
 async def pair_first_coin(message: types.Message, state: FSMContext):
@@ -51,16 +47,17 @@ async def pair_second_coin(message: types.Message, state: FSMContext):
                 reply_message = await prepare_result_pair(api_result) 
             await message.answer(reactions['pair_result'])
             await message.answer(reply_message)
+
+            await ExStates.pair_first.set()
+            await message.answer(reactions['pair'])
         except UserWarning as e:
             await message.answer(reactions['api_bad_response'])
-        await state.finish()
     else:
         keyboard = await similar_coins.create_keyboard(addresses)
         await message.reply(reactions['several'], reply_markup=keyboard)
 
 
 def register_handlers_pair(dp: Dispatcher):
-    dp.register_message_handler(pair_rate, commands=['pair'], state='*')
     dp.register_message_handler(pair_first_coin, content_types=types.ContentType.TEXT, state=ExStates.pair_first)
     dp.register_message_handler(pair_second_coin, content_types=types.ContentType.TEXT, state=ExStates.pair_second)
 
