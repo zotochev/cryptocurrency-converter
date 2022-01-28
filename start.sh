@@ -2,7 +2,7 @@
 
 
 if [ $# -eq 1 ]; then
-	pipenv lock --keep-outdated --requirements > requirements.txt
+	#pipenv lock --keep-outdated --requirements > requirements.txt
 	docker build -t cc_bot .
 	docker run -d --rm -e "TOKEN=$1" --name cc_bot_cont cc_bot
 else
